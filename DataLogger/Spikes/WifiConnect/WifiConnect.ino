@@ -44,6 +44,8 @@ void setup() {
   delay(1000);
   Serial.begin(115200);
   Serial.println();
+  Serial.println(ESP.getSdkVersion());
+  Serial.println(ESP.getCoreVersion());
   if ( loadCredentials() == true && connectWifi() == WL_CONNECTED)
   {
     //Wifi Connected
@@ -78,6 +80,7 @@ void setup() {
     Serial.println("Configuring access point...");
     IPAddress apIP(172, 217, 28, 1);
     IPAddress netMsk(255, 255, 255, 0);
+    WiFi.mode(WIFI_AP);
     WiFi.softAPConfig(apIP, apIP, netMsk);
     WiFi.softAP("Logger");
     delay(500); // Without delay I've seen the IP address blank
@@ -99,6 +102,7 @@ void setup() {
 unsigned int connectWifi() {
   Serial.println("Connecting as wifi client...");
   WiFi.disconnect();
+  WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   unsigned int connRes = WiFi.waitForConnectResult();
   Serial.print("connRes: ");
